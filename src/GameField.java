@@ -38,7 +38,7 @@ public class GameField extends JPanel implements ActionListener {
             x[i] = 48 - i *DOT_SIZE;
             y[i] = 48;
         }
-        timer = new Timer(150, this);
+        timer = new Timer(250, this);
         timer.start();
         createApple();
     }
@@ -67,7 +67,7 @@ public class GameField extends JPanel implements ActionListener {
             String str = "Game Over!";
             //Font f = new Font("Arial", 14, Font.BOLD);
             //g.setFont(f);
-            g.drawString(str, 125, SIZE/2);
+            g.drawString(str, 135, SIZE/2);
         }
     }
 
