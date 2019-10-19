@@ -23,6 +23,7 @@ public class GameField extends JPanel implements ActionListener {
     private boolean up = false;
     private boolean down = false;
     private boolean inGame = true;
+    private int score = 0;
 
     public GameField() {
         setBackground(Color.black);
@@ -44,8 +45,17 @@ public class GameField extends JPanel implements ActionListener {
     }
 
     public void createApple() {
-        appleX = new Random().nextInt(20) * DOT_SIZE;
-        appleY = new Random().nextInt(20) * DOT_SIZE;
+        boolean fl = false;
+        while (fl == false) {
+            fl = true;
+            appleX = new Random().nextInt(20) * DOT_SIZE;
+            appleY = new Random().nextInt(20) * DOT_SIZE;
+            for (int i = 0; i < dots; i++) {
+                if (x[i] == appleX && y[i] == appleY) {
+                    fl = false;
+                }
+            }
+        }
     }
 
     public void loadImages() {
@@ -63,11 +73,13 @@ public class GameField extends JPanel implements ActionListener {
             for (int i = 0; i < dots; i++) {
                 g.drawImage(dot, x[i], y[i], this);
             }
+            String str = "Score: " + score;
+
+            g.drawString(str, 10, 10);
         } else {
             String str = "Game Over!";
-            //Font f = new Font("Arial", 14, Font.BOLD);
-            //g.setFont(f);
-            g.drawString(str, 135, SIZE/2);
+            g.drawString(str, 150, SIZE/2);
+            g.drawString("Score: "+ score,160, SIZE / 2 + 20);
         }
     }
 
@@ -92,6 +104,7 @@ public class GameField extends JPanel implements ActionListener {
     public void checkApple() {
         if (x[0] == appleX && y[0] == appleY) {
             dots++;
+            score++;
             createApple();
         }
     }
