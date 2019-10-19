@@ -24,6 +24,7 @@ public class GameField extends JPanel implements ActionListener {
     private boolean down = false;
     private boolean inGame = true;
     private int score = 0;
+    private boolean madeStep = false;
 
     public GameField() {
         setBackground(Color.black);
@@ -74,12 +75,14 @@ public class GameField extends JPanel implements ActionListener {
                 g.drawImage(dot, x[i], y[i], this);
             }
             String str = "Score: " + score;
-
+            g.setColor(Color.white);
             g.drawString(str, 10, 10);
         } else {
             String str = "Game Over!";
+            g.setColor(Color.white);
             g.drawString(str, 150, SIZE/2);
             g.drawString("Score: "+ score,160, SIZE / 2 + 20);
+
         }
     }
 
@@ -98,6 +101,7 @@ public class GameField extends JPanel implements ActionListener {
         } else {
             y[0] += DOT_SIZE;
         }
+        madeStep = true;
 
     }
 
@@ -142,25 +146,29 @@ public class GameField extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             super.keyPressed(e);
             int key = e.getKeyCode();
-            if (key == KeyEvent.VK_LEFT && !right) {
+            if (key == KeyEvent.VK_LEFT && !right && madeStep) {
                 left = true;
                 up = false;
                 down = false;
+                madeStep = false;
             }
-            if (key == KeyEvent.VK_RIGHT && !left) {
+            if (key == KeyEvent.VK_RIGHT && !left && madeStep) {
                 right = true;
                 up = false;
                 down = false;
+                madeStep = false;
             }
-            if (key == KeyEvent.VK_UP && !down) {
+            if (key == KeyEvent.VK_UP && !down && madeStep) {
                 up = true;
                 left = false;
                 right = false;
+                madeStep = false;
             }
-            if (key == KeyEvent.VK_DOWN && !up) {
+            if (key == KeyEvent.VK_DOWN && !up && madeStep) {
                 down = true;
                 left = false;
                 right = false;
+                madeStep = false;
             }
         }
     }
