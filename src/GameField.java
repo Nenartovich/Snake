@@ -9,7 +9,7 @@ import java.util.Random;
 public class GameField extends JPanel implements ActionListener {
     private final int SIZE = 320;
     private final int DOT_SIZE = 16;
-    private final int ALL_DOTS = 400;
+    private final int ALL_DOTS = 4000000;
     private Image dot;
     private Image apple;
     private int appleX;
@@ -35,12 +35,12 @@ public class GameField extends JPanel implements ActionListener {
     }
 
     public void InitGame() {
-        dots = 3;
+        dots = 3*16;
         for (int i = 0; i < dots; i++) {
-            x[i] = 48 - i *DOT_SIZE;
+            x[i] = 48 - i;
             y[i] = 48;
         }
-        timer = new Timer(250, this);
+        timer = new Timer(10, this);
         timer.start();
         createApple();
     }
@@ -87,47 +87,46 @@ public class GameField extends JPanel implements ActionListener {
     }
 
     public void move() {
-        for (int i = dots; i > 0; i--) {
-            x[i] = x[i-1];
-            y[i] = y[i-1];
-        }
-
         if (left) {
-            x[0] -= DOT_SIZE;
+            x[0] --;
         } else if (right) {
-            x[0] += DOT_SIZE;
+            x[0]++;
         } else if (up) {
-            y[0] -= DOT_SIZE;
-        } else {
-            y[0] += DOT_SIZE;
+            y[0]--;
+        } else if (down) {
+            y[0]++;
         }
-        madeStep = true;
 
+        for (int i = dots; i > 0; i--) {
+          x[i] = x[i-1];
+          y[i] = y[i-1];
+        }
+
+
+        madeStep = true;
     }
 
     public void checkApple() {
-        if (x[0] == appleX && y[0] == appleY) {
-            dots++;
+        if ((x[0] <= appleX+8) && (x[0] + 16 >= appleX+8) && (y[0] <= appleY+8) && (y[0]+16 >= appleY+8)) {
+            dots += 16;
+            for (int i = dots - 16; i <= dots; i++) {
+                x[i] = x[i-1];
+                y[i] = y[i-1];
+            }
             score++;
             createApple();
         }
     }
 
     public void checkCollisions() {
-        for (int i = dots; i > 0; i--) {
-            if (i > 4 && x[0] == x[i] && y[0] == y[i]) {
-                inGame = false;
-            }
-        }
-
         if (x[0] > SIZE) {
-            inGame = false;
+            x[0] = 0;
         } else if (x[0] < 0) {
-            inGame = false;
+            x[0] = SIZE;
         } else if (y[0] > SIZE) {
-            inGame = false;
+            y[0] = 0;
         } else if (y[0] < 0) {
-            inGame = false;
+            y[0] = SIZE;
         }
     }
 
